@@ -101,20 +101,20 @@ details {
     cursor: pointer;
 }
 
-#email {
+#user {
     width: 70%;
     position: relative;
-    right: 3%;
+    right: 0.1%;
 }
 
 #senha {
-    width: 70%;
+    width: 72%;
     position: relative;
-    right: 3%;
+    right: 1%;
     margin-top: 10px;
 }
 
-#email1 {
+#user1 {
     float: left;
     left: 1%;
     position: absolute;
@@ -130,4 +130,12 @@ details {
 #login {
     right: 50%;
     width: 60px;
+}
+
+#msgError {
+    text-align: center;
+    color: #ff0000;
+    padding: 10px;
+    border-radius: 4px;
+    display: none;
 }
