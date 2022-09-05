@@ -9,6 +9,7 @@ let senhaLabel = document.querySelector('#senha1')
 let msgError = document.querySelector('#msgError')
 let fechar = document.getElementById('area')
 let tipo_erro = document.getElementById('selec')
+const txt_certo3 = document.getElementById('txtCerto')
 
 async function consutaDados1() {
     const retorno = await fetch('https://sheetdb.io/api/v1/p7fx5a53vumtf')
@@ -137,11 +138,22 @@ if (listarUser == '"Ana K"') {
         const dados2 = await retorno2.json()
         receba2(dados2)
         mandar2(dados2)
+        text(dados2)
         btCerto.addEventListener('click', () => {
             const dates2 = mandar2()
             enviarDadosParaAPI2(dates2)
             excluirDadosApi2()
             setTimeout(function() { location.reload(); }, 800);
+            const datesS = mandarDadosS()
+            enviarTextoParaAPIS(datesS)
+        })
+        btErrado.addEventListener('click', () => {
+            const dates2 = mandar2()
+            enviarDadosParaAPI2(dates2)
+            excluirDadosApi2()
+            setTimeout(function() { location.reload(); }, 750);
+            const datesS2 = mandarDadosS2()
+            enviarTextoParaAPIS2(datesS2)
         })
     }
     consutaDados2()
@@ -152,7 +164,9 @@ if (listarUser == '"Ana K"') {
         document.getElementById('Textos').innerHTML = dados2[contador4].Textos2;
         return contador4
     }
-
+    function text(dados2){
+        texto_c = dados2[contador4].Textos2;
+    }
     function mandar2() {
         contador3 = contador4;
         contar2 = contador3 + 1
@@ -190,64 +204,48 @@ if (listarUser == '"Ana K"') {
             console.error(erro)
         }
     }
+    function mandarDadosS() {
+        const textosS = {
+            txt_certo: texto_c,
+            txt_errado: '',
+            tipo_erro: ''
+        }
+        return textosS
+    }
+    async function enviarTextoParaAPIS(textosS) {
+        try {
+            const resposta = await fetch('https://sheetdb.io/api/v1/by8x1ayrmx0g4', {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(textosS)
+            })
+        } catch (erro) {
+            console.error(erro)
+        }
+    }
+    function mandarDadosS2() {
+        const textosS2 = {
+            txt_certo: txt_certo3.value,
+            txt_errado: texto_c,
+            tipo_erro: tipo_erro.value
+        }
+        return textosS2
+    }
+    async function enviarTextoParaAPIS2(textosS2) {
+        try {
+            const resposta = await fetch('https://sheetdb.io/api/v1/by8x1ayrmx0g4', {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(textosS2)
+            })
+        } catch (erro) {
+            console.error(erro)
+        }
+    }
 }
-
-
-
-
-btErrado.addEventListener('click', () => {
-    document.getElementById('mostrar').innerHTML = `<div></div>
-    <h3>tipo de erro:</h3>
-    <select name="data" id="selec">
-    <option value="">Selecionar...</option>
-    <option value="abr">Abreviação</option>
-    <option value="ace">Acentuação</option>
-    <option value="Adj">Adjetivo</option>
-    <option value="adv">Advérbio</option>
-    <option value="conj">Conjugação</option>
-    <option value="aha">Há/A</option>
-    <option value="ali">Outros Problemas</option>
-    <option value="arc">Arcaísmo</option>
-    <option value="bde">Balanceamento de delimitadores</option>
-    <option value="cap">Letras Maiúsculas</option>
-    <option value="cjc">Conjunções</option>
-    <option value="cli">Clichê</option>
-    <option value="cmt">Concordância entre modos e tempos verbais</option>
-    <option value="con">Concordância Nominal</option>
-    <option value="cop">Colocação Pronominal</option>
-    <option value="cov">Concordância Verbal</option>
-    <option value="cra">Crase</option>
-    <option value="det">Artigos e determinantes</option>
-    <option value="esp">Espaço</option>
-    <option value="est">Estrangeirismo</option>
-    <option value="ger">Gerúndio</option>
-    <option value="lex">Inadequação Lexical</option>
-    <option value="mal">Mau/Mal</option>
-    <option value="mec">Problemas mecânicos</option>
-    <option value="mor">Morfologia</option>
-    <option value="neo">Neologismo</option>
-    <option value="nol">Notações léxicas</option>
-    <option value="num">Numerais</option>
-    <option value="ond">Onde/Aonde</option>
-    <option value="ort">Ortografia</option>
-    <option value="par">Parônimos</option>
-    <option value="ple">Plebeísmo</option>
-    <option value="pre">Preposição</option>
-    <option value="pro">Pronomes</option>
-    <option value="prq">Uso de por que</option>
-    <option value="ptn">Pontuação</option>
-    <option value="ptp">Particípio</option>
-    <option value="reg">Regência verbal</option>
-    <option value="ren">Regência nominal</option>
-    <option value="rep">Repetição Excessiva de Palavras</option>
-    <option value="res">Repetição de Símbolos</option>
-    <option value="sem">Pleonasmo vicioso</option>
-    <option value="ver">verbos</option>
-</select>
-    <h3>texto certo:</h3>
-    <input id="txtCerto">
-    <br>
-    <br>
-    <button id="corrigir">Corrigir</button>
-    <br>`
-})
