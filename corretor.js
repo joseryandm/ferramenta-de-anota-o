@@ -8,23 +8,22 @@ let userLabel = document.querySelector('#user1')
 let senhaLabel = document.querySelector('#senha1')
 let msgError = document.querySelector('#msgError')
 let fechar = document.getElementById('area')
-let tipo_erro = document.getElementById('selec')
-const txt_certo3 = document.getElementById('txtCerto')
+const tipo_erro = document.getElementById('selec')
+const texto = document.querySelector('#Textos')
+const textoCerto = document.getElementById('txtCerto')
+const btCorrigir = document.getElementById('corrigir')
+const mostrar = document.getElementById('mostrar')
 
 async function consutaDados1() {
     const retorno = await fetch('https://sheetdb.io/api/v1/p7fx5a53vumtf')
     const dados1 = await retorno.json()
     user1(dados1)
-    user2(dados1)
 }
 consutaDados1()
 
 function user1(dados1) {
     usuario1 = dados1[0].User1
     senha1 = dados1[1].User1
-}
-
-function user2(dados1) {
     usuario2 = dados1[0].User2
     senha2 = dados1[1].User2
 }
@@ -49,9 +48,11 @@ console.log(listarUser)
 
 if (listarUser == '"Ana K"') {
     async function consutaDados() {
-        const retorno = await fetch('https://sheetdb.io/api/v1/p7fx5a53vumtf')
+        const retorno = await fetch('https://sheetdb.io/api/v1/3ho1covve2uzh')
         const dados = await retorno.json()
-        receba(dados)
+        const retorno2 = await fetch('https://sheetdb.io/api/v1/0wdk0v1ec7zyk')
+        const dados1 = await retorno2.json()
+        receba(dados, dados1)
         mandar(dados)
         btCerto.addEventListener('click', () => {
             const dates = mandar()
@@ -61,11 +62,20 @@ if (listarUser == '"Ana K"') {
             const datesAna = mandarDadosAna()
             enviarTextoParaAPI(datesAna)
         })
+        btCorrigir.addEventListener('click', () => {
+            const dates = mandar()
+            enviarDadosParaAPI(dates)
+            excluirDadosApi()
+            setTimeout(function() { location.reload(); }, 800);
+            const datesAna2 = mandarDadosAna2()
+            enviarTextoParaAPIAna(datesAna2)
+        })
     }
+
     consutaDados()
 
-    function receba(dados) {
-        contador = dados[8].Contador1;
+    function receba(dados, dados1) {
+        contador = dados1[0].Contador1;
         contador = parseInt(contador)
         document.getElementById('Textos').innerHTML = dados[contador].Textos;
         return contador
@@ -82,7 +92,7 @@ if (listarUser == '"Ana K"') {
 
     async function enviarDadosParaAPI(conta) {
         try {
-            const resposta = await fetch('https://sheetdb.io/api/v1/p7fx5a53vumtf', {
+            const resposta = await fetch('https://sheetdb.io/api/v1/0wdk0v1ec7zyk', {
                 method: 'POST',
                 headers: {
                     Accept: 'application/json',
@@ -97,7 +107,7 @@ if (listarUser == '"Ana K"') {
 
     async function excluirDadosApi() {
         try {
-            const resposta = await fetch(`https://sheetdb.io/api/v1/p7fx5a53vumtf/Contador1/${contador}`, {
+            const resposta = await fetch(`https://sheetdb.io/api/v1/0wdk0v1ec7zyk/Contador1/${contador}`, {
                 method: 'DELETE',
                 headers: {
                     Accept: 'application/json',
@@ -111,15 +121,24 @@ if (listarUser == '"Ana K"') {
 
     function mandarDadosAna() {
         const textosAna = {
-            txt_certo: "teste",
+            txt_certo: texto.textContent,
             txt_errado: '',
             tipo_erro: ''
         }
         return textosAna
     }
+
+    function mandarDadosAna2() {
+        const textosAna2 = {
+            txt_certo: textoCerto.value,
+            txt_errado: texto.textContent,
+            tipo_erro: tipo_erro.value
+        }
+        return textosAna2
+    }
     async function enviarTextoParaAPI(textosAna) {
         try {
-            const resposta = await fetch('https://sheetdb.io/api/v1/jc9mvvkn54345', {
+            const resposta = await fetch('https://sheetdb.io/api/v1/cfpilz2rzbg5x', {
                 method: 'POST',
                 headers: {
                     Accept: 'application/json',
@@ -131,42 +150,55 @@ if (listarUser == '"Ana K"') {
             console.error(erro)
         }
     }
+    async function enviarTextoParaAPIAna(textosAna2) {
+        try {
+            const resposta = await fetch('https://sheetdb.io/api/v1/cfpilz2rzbg5x', {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(textosAna2)
+            })
+        } catch (erro) {
+            console.error(erro)
+        }
+    }
 
 } else {
     async function consutaDados2() {
-        const retorno2 = await fetch('https://sheetdb.io/api/v1/0wdk0v1ec7zyk')
+        const retorno2 = await fetch('https://sheetdb.io/api/v1/zg4s99u4xobdl')
         const dados2 = await retorno2.json()
-        receba2(dados2)
+        const retorno3 = await fetch('https://sheetdb.io/api/v1/p7hm31debemyd')
+        const dados3 = await retorno3.json()
+        receba2(dados2, dados3)
         mandar2(dados2)
-        text(dados2)
         btCerto.addEventListener('click', () => {
             const dates2 = mandar2()
             enviarDadosParaAPI2(dates2)
             excluirDadosApi2()
             setTimeout(function() { location.reload(); }, 800);
-            const datesS = mandarDadosS()
-            enviarTextoParaAPIS(datesS)
+            const datesShara = mandarDadosShara()
+            enviarTextoParaAPIShara(datesShara)
         })
-        btErrado.addEventListener('click', () => {
-            const dates2 = mandar2()
-            enviarDadosParaAPI2(dates2)
+        btCorrigir.addEventListener('click', () => {
+            const dates = mandar2()
+            enviarDadosParaAPI2(dates)
             excluirDadosApi2()
-            setTimeout(function() { location.reload(); }, 750);
-            const datesS2 = mandarDadosS2()
-            enviarTextoParaAPIS2(datesS2)
+            setTimeout(function() { location.reload(); }, 800);
+            const datesShara2 = mandarDadosShara2()
+            enviarTextoParaAPIShara2(datesShara2)
         })
     }
     consutaDados2()
 
-    function receba2(dados2) {
-        contador4 = dados2[10].Contador2;
+    function receba2(dados2, dados3) {
+        contador4 = dados3[0].Contador2;
         contador4 = parseInt(contador4)
-        document.getElementById('Textos').innerHTML = dados2[contador4].Textos2;
+        document.getElementById('Textos').innerHTML = dados2[contador4].Textos;
         return contador4
     }
-    function text(dados2){
-        texto_c = dados2[contador4].Textos2;
-    }
+
     function mandar2() {
         contador3 = contador4;
         contar2 = contador3 + 1
@@ -178,7 +210,7 @@ if (listarUser == '"Ana K"') {
 
     async function enviarDadosParaAPI2(conta2) {
         try {
-            const resposta2 = await fetch('https://sheetdb.io/api/v1/0wdk0v1ec7zyk', {
+            const resposta2 = await fetch('https://sheetdb.io/api/v1/p7hm31debemyd', {
                 method: 'POST',
                 headers: {
                     Accept: 'application/json',
@@ -193,7 +225,7 @@ if (listarUser == '"Ana K"') {
 
     async function excluirDadosApi2() {
         try {
-            const resposta = await fetch(`https://sheetdb.io/api/v1/0wdk0v1ec7zyk/Contador2/${contador4}`, {
+            const resposta = await fetch(`https://sheetdb.io/api/v1/p7hm31debemyd/Contador2/${contador4}`, {
                 method: 'DELETE',
                 headers: {
                     Accept: 'application/json',
@@ -204,48 +236,58 @@ if (listarUser == '"Ana K"') {
             console.error(erro)
         }
     }
-    function mandarDadosS() {
-        const textosS = {
-            txt_certo: texto_c,
-            txt_errado: '',
-            tipo_erro: ''
-        }
-        return textosS
+}
+
+function mandarDadosShara() {
+    const textosShara = {
+        txt_certo: texto.textContent,
+        txt_errado: '',
+        tipo_erro: ''
     }
-    async function enviarTextoParaAPIS(textosS) {
-        try {
-            const resposta = await fetch('https://sheetdb.io/api/v1/by8x1ayrmx0g4', {
-                method: 'POST',
-                headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(textosS)
-            })
-        } catch (erro) {
-            console.error(erro)
-        }
+    return textosShara
+}
+
+function mandarDadosShara2() {
+    const textosShara2 = {
+        txt_certo: textoCerto.value,
+        txt_errado: texto.textContent,
+        tipo_erro: tipo_erro.value
     }
-    function mandarDadosS2() {
-        const textosS2 = {
-            txt_certo: txt_certo3.value,
-            txt_errado: texto_c,
-            tipo_erro: tipo_erro.value
-        }
-        return textosS2
-    }
-    async function enviarTextoParaAPIS2(textosS2) {
-        try {
-            const resposta = await fetch('https://sheetdb.io/api/v1/by8x1ayrmx0g4', {
-                method: 'POST',
-                headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(textosS2)
-            })
-        } catch (erro) {
-            console.error(erro)
-        }
+    return textosShara2
+}
+
+async function enviarTextoParaAPIShara(textosShara) {
+    try {
+        const resposta = await fetch('https://sheetdb.io/api/v1/pf5yxpnrydcvs', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(textosShara)
+        })
+    } catch (erro) {
+        console.error(erro)
     }
 }
+
+async function enviarTextoParaAPIShara2(textosShara2) {
+    try {
+        const resposta = await fetch('https://sheetdb.io/api/v1/pf5yxpnrydcvs', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(textosShara2)
+        })
+    } catch (erro) {
+        console.error(erro)
+    }
+}
+
+btErrado.addEventListener('click', () => {
+        mostrar.setAttribute('style', 'display: block')
+        btCorrigir.setAttribute('style', 'display: block')
+    })
+    //https://sheetdb.io/api/v1/pf5yxpnrydcvs

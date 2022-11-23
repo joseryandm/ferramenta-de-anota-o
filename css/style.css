@@ -23,7 +23,7 @@ body {
 #intro {
     display: block;
     width: 100vw;
-    height: 100vh;
+    height: 150vh;
     padding: 0;
     color: white;
     top: 0;
@@ -31,6 +31,7 @@ body {
     background-position: 30% 45%;
     background-size: cover;
     position: absolute;
+    overflow: hidden;
 }
 
 * {
@@ -137,5 +138,15 @@ details {
     color: #ff0000;
     padding: 10px;
     border-radius: 4px;
+    display: none;
+}
+
+#corrigir {
+    display: none;
+    position: relative;
+    left: 40%;
+}
+
+#mostrar {
     display: none;
 }
